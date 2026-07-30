@@ -1,390 +1,180 @@
-# 📧 Mail Sender
+# Mail Sender API
 
-A simple and secure contact form backend built with **Node.js**, **Express.js**, **EJS**, and **Nodemailer**. It allows users to send messages directly from a website to your Gmail inbox using Gmail SMTP and Google App Password authentication.
+REST API for a portfolio contact form built with Node.js, Express, Nodemailer, Gmail SMTP, dotenv, and cors.
 
-Perfect for portfolio websites, personal websites, landing pages, and business contact forms.
-
----
-
-## 🚀 Features
-
-- 📩 Contact form with email support
-- 🔐 Secure Gmail authentication using App Password
-- ⚡ Fast Express.js backend
-- 🎨 EJS template engine
-- 📁 Clean project structure
-- 🌍 Ready for deployment
-- 🔒 Environment variable support using `.env`
-
----
-
-# 📂 Project Structure
-
-```
-mail-sender/
-│
-├── config/
-│   └── mailConfig.js
-│
-├── controllers/
-│   └── mailController.js
-│
-├── routes/
-│   └── mailRoutes.js
-│
-├── services/
-│   └── sendMail.js
-│
-├── views/
-│   ├── mail.ejs
-│   └── success.ejs
-│
-├── .env
-├── .gitignore
-├── app.js
-├── server.js
-├── package.json
-└── README.md
-```
-
----
-
-# 🛠️ Tech Stack
-
-- Node.js
-- Express.js
-- Nodemailer
-- EJS
-- Dotenv
-
----
-
-# 📥 Clone Repository
-
-```bash
-git clone https://github.com/arcadenarendra/mail-sender.git
-```
-
-Move into the project.
-
-```bash
-cd mail-sender
-```
-
----
-
-# 📦 Install Dependencies
-
-Install all dependencies.
+## Installation
 
 ```bash
 npm install
 ```
 
-or manually
-
-```bash
-npm install express ejs dotenv nodemailer
-```
-
-Install Nodemon for development.
-
-```bash
-npm install -D nodemon
-```
-
----
-
-# ▶️ Run the Project
-
-Development
+## Running Locally
 
 ```bash
 npm run dev
-```
-
-Production
-
-```bash
-npm start
-```
-
-The application will start on
-
-```
-http://localhost:3000
 ```
 
 or
 
-```
-http://localhost:3000/mail
-```
-
-depending on your configured routes.
-
----
-
-# 🔐 Environment Variables
-
-Create a file named
-
-```
-.env
-```
-
-inside the root directory.
-
-Example
-
-```env
-MAIL=yourgmail@gmail.com
-PASS=your_google_app_password
-```
-
-Example
-
-```env
-MAIL=johndoe@gmail.com
-PASS=abcd efgh ijkl mnop
-```
-
-Never commit this file to GitHub.
-
----
-
-# 🔒 Create a Gmail App Password
-
-Google no longer allows applications like Nodemailer to authenticate using your normal Gmail password.
-
-Instead, generate an App Password.
-
----
-
-## Step 1
-
-Open
-
-https://myaccount.google.com/
-
----
-
-## Step 2
-
-Go to
-
-```
-Security
-```
-
----
-
-## Step 3
-
-Enable
-
-```
-2-Step Verification
-```
-
-If it is already enabled, continue.
-
----
-
-## Step 4
-
-Open
-
-https://myaccount.google.com/apppasswords
-
-or search
-
-```
-App Passwords
-```
-
-inside your Google Account.
-
----
-
-## Step 5
-
-Select
-
-```
-App
-
-Mail
-```
-
-Device
-
-```
-Other (Custom Name)
-```
-
-Example
-
-```
-Mail Sender
-```
-
-Click
-
-```
-Generate
-```
-
----
-
-## Step 6
-
-Google will generate a password similar to
-
-```
-abcd efgh ijkl mnop
-```
-
-Copy it.
-
-This is **NOT** your Gmail password.
-
-Use it inside
-
-```
-.env
-```
-
-Example
-
-```env
-MAIL=yourgmail@gmail.com
-PASS=abcd efgh ijkl mnop
-```
-
----
-
-# 📤 How Email Sending Works
-
-```
-User fills the contact form
-            │
-            ▼
-Express Route (/send)
-            │
-            ▼
-Nodemailer
-            │
-            ▼
-Gmail SMTP
-            │
-            ▼
-Your Inbox
-```
-
----
-
-# 🧪 API Testing
-
-## Endpoint
-
-```
-POST /send
-```
-
-### Example Request
-
-```json
-{
-    "from": "john.doe@gmail.com",
-    "subject": "Portfolio Inquiry",
-    "message": "Hello! This is a test email."
-}
-```
-
----
-
-# 🌐 Deploying
-
-This project can be deployed on
-
-- Vercel
-- Railway
-- Render
-
-Before deploying, add the following Environment Variables inside your hosting platform.
-
-```
-MAIL=yourgmail@gmail.com
-PASS=your_google_app_password
-```
-
-
----
-
-# 📄 Scripts
-
-Run in development mode
-
-```bash
-npm run dev
-```
-
-Run in production
-
 ```bash
 npm start
 ```
 
-Install packages
+The server listens on `process.env.PORT || 3000`.
 
-```bash
-npm install
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+MAIL=yourgmail@gmail.com
+PASS=your_google_app_password
 ```
 
----
+`MAIL` is the Gmail inbox that receives the portfolio messages.
 
-# 🤝 Integrating with Your Portfolio
+`PASS` is the Gmail App Password, not your regular Gmail password.
 
-Once deployed, your frontend can send requests directly to your backend.
+## Gmail App Password
 
-Example
+Google requires an App Password for SMTP access when 2-Step Verification is enabled.
+
+1. Open https://myaccount.google.com/
+2. Go to `Security`
+3. Enable `2-Step Verification` if needed
+4. Open https://myaccount.google.com/apppasswords
+5. Create an App Password for `Mail`
+6. Put the generated password in `PASS`
+
+## CORS
+
+Development uses:
+
+```js
+app.use(cors());
+```
+
+When you deploy your portfolio, replace that with a restricted origin such as:
+
+```js
+app.use(cors({ origin: "https://your-portfolio-domain.com" }));
+```
+
+Update that in [`app.js`](app.js).
+
+## API Endpoint
+
+### `POST /send`
+
+Request body:
+
+```json
+{
+  "name": "Narendra Prajapati",
+  "from": "narendra@gmail.com",
+  "message": "Hello, I want to work with you."
+}
+```
+
+If any field is missing or blank, the API returns `400`:
+
+```json
+{
+  "success": false,
+  "message": "All fields are required."
+}
+```
+
+If the email is sent successfully, the API returns `200`:
+
+```json
+{
+  "success": true,
+  "message": "Message sent successfully."
+}
+```
+
+If sending fails, the API returns `500`:
+
+```json
+{
+  "success": false,
+  "message": "Failed to send email."
+}
+```
+
+If the JSON body is malformed, the API also returns JSON:
+
+```json
+{
+  "success": false,
+  "message": "Invalid JSON payload."
+}
+```
+
+## Example Request
 
 ```javascript
-fetch("https://your-backend-url.vercel.app/send", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        from,
-        subject,
-        message
-    })
+fetch("https://your-backend-url/send", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name,
+    from,
+    message
+  })
 });
 ```
 
-The request flow is:
+## Example Response
 
-```
-Portfolio Website
-        │
-        ▼
-Mail Sender Backend
-        │
-        ▼
-Gmail SMTP
-        │
-        ▼
-Your Inbox
+```json
+{
+  "success": true,
+  "message": "Message sent successfully."
+}
 ```
 
-# 👨‍💻 Author
+## Railway Deployment
 
-**Narendra Prajapati**
+1. Push the repository to GitHub.
+2. Create a new Railway service from the repo.
+3. Set `MAIL`, `PASS`, and any `PORT` value Railway provides.
+4. Deploy without code changes.
 
-GitHub:
-https://github.com/arcadenarendra
+## Render Deployment
 
-Repository:
-https://github.com/arcadenarendra/mail-sender
+1. Create a new Render Web Service from the repository.
+2. Set `MAIL` and `PASS` in the environment variables.
+3. Use the existing start command.
+4. Deploy without code changes.
+
+## Email Format
+
+The received email uses this structure:
+
+```text
+New Portfolio Contact
+
+Name:
+{{name}}
+
+Email:
+{{from}}
+
+Message:
+
+{{message}}
+```
+
+The sender's email is used as `Reply-To`.
+
+## Project Structure
+
+- `config/` for the Nodemailer transporter
+- `controllers/` for the HTTP response logic
+- `middleware/` for request validation
+- `routes/` for endpoint wiring
+- `services/` for the mail-sending logic

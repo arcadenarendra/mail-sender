@@ -1,7 +1,7 @@
 {
   "name": "contact-form",
   "version": "1.0.0",
-  "description": "A contact form built with Node.js, Express, EJS, and Nodemailer for sending emails.",
+  "description": "A REST API built with Node.js, Express, Nodemailer, and Gmail SMTP for sending portfolio contact emails.",
   "type": "module",
   "main": "server.js",
   "scripts": {
@@ -14,12 +14,12 @@
     "express",
     "nodemailer",
     "contact-form",
-    "ejs"
+    "rest-api"
   ],
 
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.4.2",
-    "ejs": "^6.0.1",
     "express": "^5.2.1",
     "nodemailer": "^9.0.3"
   },
