@@ -9,10 +9,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Mail Sender API is running 🚀"
-  });
+    res.json({
+        status: "Running",
+        message: "Mail Sender API is live"
+    });
+});
+
+app.get("/health", (req, res) => {
+    res.status(200).send("OK");
 });
 
 app.use("/send", mailRoutes);
