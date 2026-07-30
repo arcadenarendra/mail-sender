@@ -20,7 +20,9 @@ or
 npm start
 ```
 
-The server listens on `process.env.PORT || 3000`.
+The server listens on `process.env.PORT`.
+
+On Railway, `PORT` is injected automatically and must not be hardcoded in the deployment.
 
 ## Environment Variables
 
@@ -29,11 +31,14 @@ Create a `.env` file in the project root:
 ```env
 MAIL=yourgmail@gmail.com
 PASS=your_google_app_password
+CORS_ORIGIN=https://your-portfolio-domain.com
 ```
 
 `MAIL` is the Gmail inbox that receives the portfolio messages.
 
 `PASS` is the Gmail App Password, not your regular Gmail password.
+
+`CORS_ORIGIN` is the exact browser origin allowed to call the API. Use a comma-separated list if you need multiple origins.
 
 ## Gmail App Password
 
@@ -48,19 +53,9 @@ Google requires an App Password for SMTP access when 2-Step Verification is enab
 
 ## CORS
 
-Development uses:
+Allowed browser origins are controlled by `CORS_ORIGIN` in `.env` and Railway. Use a comma-separated list if you need more than one origin.
 
-```js
-app.use(cors());
-```
-
-When you deploy your portfolio, replace that with a restricted origin such as:
-
-```js
-app.use(cors({ origin: "https://your-portfolio-domain.com" }));
-```
-
-Update that in [`app.js`](app.js).
+The CORS policy is enforced in [`app.js`](app.js).
 
 ## API Endpoint
 
@@ -112,6 +107,22 @@ If the JSON body is malformed, the API also returns JSON:
 }
 ```
 
+The route also validates email format and basic field length limits before attempting SMTP delivery.
+
+### `GET /health`
+
+Returns:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+### `GET /`
+
+Returns a success JSON response confirming the API is live.
+
 ## Example Request
 
 ```javascript
@@ -141,7 +152,7 @@ fetch("https://your-backend-url/send", {
 
 1. Push the repository to GitHub.
 2. Create a new Railway service from the repo.
-3. Set `MAIL`, `PASS`, and any `PORT` value Railway provides.
+3. Set `MAIL`, `PASS`, and `CORS_ORIGIN` in Railway.
 4. Deploy without code changes.
 
 ## Render Deployment
