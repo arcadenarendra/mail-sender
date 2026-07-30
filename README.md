@@ -38,7 +38,7 @@ CORS_ORIGIN=https://your-portfolio-domain.com
 
 `PASS` is the Gmail App Password, not your regular Gmail password.
 
-`CORS_ORIGIN` is the exact browser origin allowed to call the API. Use a comma-separated list if you need multiple origins.
+`CORS_ORIGIN` is optional. If set, it should be the exact browser origin allowed to call the API. Use a comma-separated list if you need multiple origins, or `*` to allow all origins.
 
 ## Gmail App Password
 
@@ -53,7 +53,7 @@ Google requires an App Password for SMTP access when 2-Step Verification is enab
 
 ## CORS
 
-Allowed browser origins are controlled by `CORS_ORIGIN` in `.env` and Railway. Use a comma-separated list if you need more than one origin.
+Allowed browser origins are controlled by `CORS_ORIGIN` in `.env` and Railway. Use a comma-separated list if you need more than one origin, or leave it unset for permissive local/dev access.
 
 The CORS policy is enforced in [`app.js`](app.js).
 
